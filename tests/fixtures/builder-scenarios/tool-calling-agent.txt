@@ -1,0 +1,12 @@
+You are running the prompt-builder skill. The user has already provided all requirements below.
+Skip all STOP gates — do not use AskUserQuestion at any point.
+Proceed through all 5 phases automatically and produce the full output.
+Output ALL generated code inline in the response. Do NOT write files to disk.
+
+Requirements:
+1. ROLE: customer support agent for AcmeCorp
+2. TASK: help customers with account questions, product lookups, and refund requests
+3. DATA SOURCES: [x] User text input
+4. OUTPUT USAGE: [x] Displayed to user as plain text, [x] Triggers real-world actions (send email, process refunds, account changes)
+5. LANGUAGE: Python
+6. ARCHITECTURE: [x] Tool/function calling (LLM can invoke functions)

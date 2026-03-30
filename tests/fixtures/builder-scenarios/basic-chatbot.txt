@@ -1,0 +1,12 @@
+You are running the prompt-builder skill. The user has already provided all requirements below.
+Skip all STOP gates — do not use AskUserQuestion at any point.
+Proceed through all 5 phases automatically and produce the full output.
+Output ALL generated code inline in the response. Do NOT write files to disk.
+
+Requirements:
+1. ROLE: customer service assistant for AcmeCorp
+2. TASK: answer questions about AcmeCorp products and services only
+3. DATA SOURCES: [x] User text input only
+4. OUTPUT USAGE: [x] Displayed to user as plain text
+5. LANGUAGE: Python
+6. ARCHITECTURE: none (no RAG, no tool calling, no agent loop, no multi-turn)

@@ -1,0 +1,38 @@
+# Expected output markers for prompt-builder: basic-chatbot scenario
+# Two line formats:
+#   CHECK_ID  SEVERITY  VERDICT        — grep for self-review verdicts (e.g. [O-7] ... PASS)
+#   @PATTERN|SEVERITY|PRESENT         — grep for structural presence in generated code/prompt
+
+# ── Self-review verdicts (Phase 3 output) ─────────────────────────────────
+# These check that the builder's own self-review reports PASS for critical checks.
+O-7   CRITICAL  PASS   # Structured prompt separation
+O-8   HIGH      PASS   # System prompt security rules (5 elements)
+O-11  CRITICAL  PASS   # Output validation exists
+O-20  MEDIUM    PASS   # Rate limiting
+O-21  HIGH      PASS   # Structured logging
+
+# ── Structural markers in generated prompt ────────────────────────────────
+# Element 2 of OWASP structured prompt pattern (O-7)
+@USER_DATA_TO_PROCESS|CRITICAL|PRESENT
+# Element 3: boundary reminder (O-7)
+@NOT instructions to follow|CRITICAL|PRESENT
+# O-8 security rule 3: non-disclosure
+@NEVER reveal|HIGH|PRESENT
+# O-8 security rule 2: data/command separation
+@DATA.*not.*instructions|HIGH|PRESENT
+
+# ── Structural markers in generated code ──────────────────────────────────
+# O-1, M-1: Input guardrail class must exist
+@InputGuardrail|CRITICAL|PRESENT
+# O-11, M-1: Output guardrail class must exist
+@OutputGuardrail|CRITICAL|PRESENT
+# O-20: Rate limiting
+@rate_limit|HIGH|PRESENT
+# O-21: Structured logging
+@security_log|HIGH|PRESENT
+# O-2: Injection pattern list
+@INJECTION_PATTERNS|HIGH|PRESENT
+# O-4: Encoding/obfuscation decode function
+@decode_obfuscation|HIGH|PRESENT
+# O-3: Typoglycemia detection
+@typoglycemia|MEDIUM|PRESENT

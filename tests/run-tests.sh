@@ -16,6 +16,9 @@ case "${1:-}" in
   --help|-h)
     echo "Usage: $0 [--claude-only | --codex-only] [fixture_name]"
     echo "  fixture_name: vulnerable-app | defended-app | all (default: all)"
+    echo ""
+    echo "Builder tests always run via Claude only (separate from reviewer tests):"
+    echo "  builder scenario names: basic-chatbot | rag-assistant | tool-calling-agent | all"
     exit 0
     ;;
   "")
@@ -40,12 +43,15 @@ echo "╚═══════════════════════�
 echo -e "${RESET}"
 
 if $RUN_CLAUDE; then
-  echo -e "${CYAN}── Claude CLI Tests ─────────────────────────────────────${RESET}"
+  echo -e "${CYAN}── Claude CLI Tests: prompt-injection-review ────────────${RESET}"
   bash "$SCRIPT_DIR/test-claude.sh" "$FIXTURE" || OVERALL_PASS=false
+
+  echo -e "\n${CYAN}── Claude CLI Tests: prompt-builder ─────────────────────${RESET}"
+  bash "$SCRIPT_DIR/test-builder-claude.sh" all || OVERALL_PASS=false
 fi
 
 if $RUN_CODEX; then
-  echo -e "\n${CYAN}── Codex CLI Tests ──────────────────────────────────────${RESET}"
+  echo -e "\n${CYAN}── Codex CLI Tests: prompt-injection-review ─────────────${RESET}"
   bash "$SCRIPT_DIR/test-codex.sh" "$FIXTURE" || OVERALL_PASS=false
 fi
 

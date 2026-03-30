@@ -1,0 +1,36 @@
+# Expected output markers for prompt-builder: rag-assistant scenario
+# Two line formats:
+#   CHECK_ID  SEVERITY  VERDICT        — grep for self-review verdicts (e.g. [O-7] ... PASS)
+#   @PATTERN|SEVERITY|PRESENT         — grep for structural presence in generated code/prompt
+
+# ── Self-review verdicts (Phase 3 output) ─────────────────────────────────
+O-7   CRITICAL  PASS   # Structured prompt separation
+O-8   HIGH      PASS   # System prompt security rules
+O-10  CRITICAL  PASS   # External content segregated (RAG chunks labeled untrusted)
+O-11  CRITICAL  PASS   # Output validation exists
+O-20  MEDIUM    PASS   # Rate limiting
+O-21  HIGH      PASS   # Structured logging
+
+# ── Structural markers in generated prompt ────────────────────────────────
+@USER_DATA_TO_PROCESS|CRITICAL|PRESENT
+@NOT instructions to follow|CRITICAL|PRESENT
+@NEVER reveal|HIGH|PRESENT
+@DATA.*not.*instructions|HIGH|PRESENT
+
+# ── RAG-specific markers (O-10, N-11, N-12, N-13) ────────────────────────
+# Untrusted block label for external RAG/file content (O-10)
+@UNTRUSTED_|CRITICAL|PRESENT
+# Content validation before indexing (N-11) — accepts validate_and_index or validate_before_indexing
+@validate.*index|HIGH|PRESENT
+# Retrieval result filtering (N-12) — accepts retrieve_and_filter or retrieve_chunks
+@retrieve.*chunk|HIGH|PRESENT
+# Source attribution / trust level (N-13)
+@trust|HIGH|PRESENT
+
+# ── Base structural markers in generated code ─────────────────────────────
+@InputGuardrail|CRITICAL|PRESENT
+@OutputGuardrail|CRITICAL|PRESENT
+@rate_limit|HIGH|PRESENT
+@security_log|HIGH|PRESENT
+@INJECTION_PATTERNS|HIGH|PRESENT
+@decode_obfuscation|HIGH|PRESENT

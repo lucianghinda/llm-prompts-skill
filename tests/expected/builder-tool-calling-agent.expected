@@ -1,0 +1,39 @@
+# Expected output markers for prompt-builder: tool-calling-agent scenario
+# Two line formats:
+#   CHECK_ID  SEVERITY  VERDICT        — grep for self-review verdicts (e.g. [O-7] ... PASS)
+#   @PATTERN|SEVERITY|PRESENT         — grep for structural presence in generated code/prompt
+
+# ── Self-review verdicts (Phase 3 output) ─────────────────────────────────
+O-7   CRITICAL  PASS   # Structured prompt separation
+O-8   HIGH      PASS   # System prompt security rules
+O-11  CRITICAL  PASS   # Output validation exists
+O-16  CRITICAL  PASS   # LLM output not directly executed (parameterized SQL only)
+O-17  HIGH      PASS   # Least privilege (read-only DB, tool allowlist)
+O-18  CRITICAL  PASS   # Human approval for destructive actions
+O-20  MEDIUM    PASS   # Rate limiting
+O-21  HIGH      PASS   # Structured logging
+
+# ── Structural markers in generated prompt ────────────────────────────────
+@USER_DATA_TO_PROCESS|CRITICAL|PRESENT
+@NOT instructions to follow|CRITICAL|PRESENT
+@NEVER reveal|HIGH|PRESENT
+# O-8 security rule 2: data/command separation — "DATA ... never as instructions" or "DATA, not instructions"
+@DATA.*instructions|HIGH|PRESENT
+# O-8: tool-calling variant must add "request don't execute" rule — "may REQUEST actions" or similar
+@may REQUEST.*actions|HIGH|PRESENT
+
+# ── Tool-calling-specific markers (O-16, O-17, O-18, M-6, M-7, M-8) ─────
+# Human-in-the-loop function: LLM can request, not execute (O-18, M-7)
+@request_human_review|CRITICAL|PRESENT
+# Table allowlist: scoped tool access (O-17, M-6) — accepts ALLOWED_TABLES or ALLOWED_READ_TABLES
+@ALLOWED_.*TABLE|HIGH|PRESENT
+# Parameterized SQL or SELECT allowlist (O-16, M-8)
+@SELECT|HIGH|PRESENT
+
+# ── Base structural markers in generated code ─────────────────────────────
+@InputGuardrail|CRITICAL|PRESENT
+@OutputGuardrail|CRITICAL|PRESENT
+@rate_limit|HIGH|PRESENT
+@security_log|HIGH|PRESENT
+@INJECTION_PATTERNS|HIGH|PRESENT
+@decode_obfuscation|HIGH|PRESENT
