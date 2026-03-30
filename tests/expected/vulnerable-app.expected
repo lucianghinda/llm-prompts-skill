@@ -1,0 +1,37 @@
+# Expected findings for vulnerable-app fixture
+# Format: CHECK_ID SEVERITY VERDICT
+# VERDICT must be exactly FAIL (for critical/high items we enforce strictly)
+# Lines starting with # are comments
+
+# ── OWASP Critical & High ──────────────────────────────────────────────────
+O-1  CRITICAL  FAIL   # No input validation at all in app.py
+O-7  CRITICAL  FAIL   # Direct string concatenation, no structured separation
+O-10 CRITICAL  FAIL   # External content not segregated (summarize_page endpoint)
+O-11 CRITICAL  FAIL   # No output validation before returning responses
+O-16 CRITICAL  FAIL   # eval() on LLM output in /calculate; raw SQL in /search
+O-18 CRITICAL  FAIL   # send_email tool fires with no human approval
+
+O-2  HIGH      FAIL   # No pattern detection for injection keywords
+O-4  HIGH      FAIL   # No encoding detection
+O-8  HIGH      FAIL   # System prompt has no behavioral constraints or refusals
+O-9  HIGH      FAIL   # No system prompt extraction defense
+O-15 HIGH      FAIL   # Raw HTML output returned (XSS vector)
+O-17 HIGH      FAIL   # Admin DB credentials, no least privilege
+O-21 HIGH      FAIL   # No logging of LLM interactions
+
+# ── MITRE ATLAS Critical & High ────────────────────────────────────────────
+M-1  CRITICAL  FAIL   # No guardrail layer between user and LLM
+M-7  CRITICAL  FAIL   # send_email and run_shell_command: no human-in-the-loop
+M-8  CRITICAL  FAIL   # Tool parameters not validated; eval() of LLM output
+
+M-4  HIGH      FAIL   # No AI telemetry logging
+M-6  HIGH      FAIL   # Agent tools have no permission scoping
+M-10 HIGH      FAIL   # Full DB access including admin_secrets table
+
+# ── NeMo Patterns High ─────────────────────────────────────────────────────
+N-3  HIGH      FAIL   # No injection detection in LLM output (SQL, code, SSTI)
+N-10 HIGH      FAIL   # No code/injection scan on LLM output before downstream use
+N-11 HIGH      FAIL   # No content validation before RAG indexing
+N-12 HIGH      FAIL   # No retrieval filtering
+N-14 HIGH      FAIL   # Single-layer defense does not exist at all
+N-15 HIGH      FAIL   # No configurable detection actions

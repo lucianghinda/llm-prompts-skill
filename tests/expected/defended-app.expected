@@ -1,0 +1,37 @@
+# Expected findings for defended-app fixture
+# Format: CHECK_ID SEVERITY VERDICT
+# VERDICT must be exactly PASS (for critical/high items we enforce strictly)
+# Lines starting with # are comments
+
+# ── OWASP Critical & High ──────────────────────────────────────────────────
+O-1  CRITICAL  PASS   # InputGuardrail.check() validates all user input
+O-7  CRITICAL  PASS   # Structured messages array with system/user role separation
+O-10 CRITICAL  PASS   # External content explicitly labeled UNTRUSTED in prompts
+O-11 CRITICAL  PASS   # OutputGuardrail.process() validates all LLM output
+O-16 CRITICAL  PASS   # No eval(); SQL is parameterized and allowlisted
+O-18 CRITICAL  PASS   # request_human_review() tool — no direct destructive actions
+
+O-2  HIGH      PASS   # INJECTION_PATTERNS regex detection in InputGuardrail
+O-4  HIGH      PASS   # _decode_obfuscation() handles Base64, letter-spacing
+O-8  HIGH      PASS   # SYSTEM_PROMPT has explicit role, constraints, and refusals
+O-9  HIGH      PASS   # SYSTEM_PROMPT instructs model not to reveal itself
+O-15 HIGH      PASS   # HTML injection patterns blocked in OutputGuardrail
+O-17 HIGH      PASS   # Read-only DB connection, ALLOWED_TABLES restrict access
+O-21 HIGH      PASS   # security_log captures all LLM interactions with structured fields
+
+# ── MITRE ATLAS Critical & High ────────────────────────────────────────────
+M-1  CRITICAL  PASS   # InputGuardrail + OutputGuardrail form both rails
+M-7  CRITICAL  PASS   # request_human_review() is the only path to destructive ops
+M-8  CRITICAL  PASS   # _SAFE_SQL_PATTERN + ALLOWED_TABLES enforce tool parameter validation
+
+M-4  HIGH      PASS   # security_log with ip, message length, response length
+M-6  HIGH      PASS   # AGENT_TOOLS restricted to 3 read-only / approval-gated tools
+M-10 HIGH      PASS   # Only products/faqs/support_articles tables accessible
+
+# ── NeMo Patterns High ─────────────────────────────────────────────────────
+N-3  HIGH      PASS   # HTML/SSTI patterns in InputGuardrail.INJECTION_PATTERNS
+N-10 HIGH      PASS   # OutputGuardrail scans for HTML, leakage, sensitive data
+N-11 HIGH      PASS   # validate_before_indexing() scans all docs before RAG indexing
+N-12 HIGH      PASS   # retrieve_and_answer() filters by source_type trust level
+N-14 HIGH      PASS   # Input rail (InputGuardrail) + output rail (OutputGuardrail) + retrieval rail (rag.py)
+N-15 HIGH      PASS   # action="block" vs "sanitize" configurable in InputGuardrail
