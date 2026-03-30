@@ -7,7 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-SKILL_FILE="$PROJECT_DIR/skill/SKILL.md"
+SKILL_FILE="$PROJECT_DIR/prompt-injection-review/SKILL.md"
 FIXTURES_DIR="$SCRIPT_DIR/fixtures"
 OUTPUT_DIR="$SCRIPT_DIR/output"
 EXPECTED_DIR="$SCRIPT_DIR/expected"
@@ -119,7 +119,7 @@ validate_output() {
 
     [[ -z "$check_id" || -z "$severity" || -z "$expected_verdict" ]] && continue
 
-    if grep -qiE "\[?${check_id}\]?[[:space:][:punct:]]*[A-Za-z ]*${expected_verdict}" "$output_file"; then
+    if grep -qiE "\[?${check_id}\]?.*[[:space:]]${expected_verdict}([[:space:]]|[[:punct:]]|$)" "$output_file"; then
       echo -e "    ${GREEN}✓ PASS${RESET}  ${check_id} (${severity}): found expected ${expected_verdict}"
       ((fixture_pass++))
     else

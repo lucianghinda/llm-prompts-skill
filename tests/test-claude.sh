@@ -7,7 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-SKILL_FILE="$PROJECT_DIR/skill/SKILL.md"
+SKILL_FILE="$PROJECT_DIR/prompt-injection-review/SKILL.md"
 FIXTURES_DIR="$SCRIPT_DIR/fixtures"
 OUTPUT_DIR="$SCRIPT_DIR/output"
 EXPECTED_DIR="$SCRIPT_DIR/expected"
@@ -62,17 +62,17 @@ run_fixture() {
   # --dangerously-skip-permissions: needed for non-interactive file access
   # --tools: only read-only tools needed for the review
   echo "  Invoking claude CLI... (this may take 60-120 seconds)"
-  claude -p \
+  (cd "$fixture_dir" && claude -p \
     --system-prompt "$SKILL_CONTENT" \
     --dangerously-skip-permissions \
     --tools "Read,Grep,Glob,Bash" \
-    --add-dir "$fixture_dir" \
     --output-format text \
     "You are running a prompt injection security review.
-Review scope: codebase (the entire directory you have access to).
+Review scope: codebase (the current working directory only).
+Do NOT look in parent directories or other locations.
 Do NOT use AskUserQuestion — skip all STOP gates and produce the full report directly.
 Work through all 5 phases (Discovery, OWASP, MITRE, NeMo, Report) and output the
-complete findings with PASS/FAIL/N-A for every check ID (O-1 through O-23, M-1 through M-12, N-1 through N-16)." \
+complete findings with PASS/FAIL/N-A for every check ID (O-1 through O-23, M-1 through M-12, N-1 through N-16).") \
     > "$output_file" 2>&1
 
   echo "  Output saved to: $output_file"
@@ -106,7 +106,7 @@ validate_output() {
 
     # Search the output for this check ID with its expected verdict
     # Looks for patterns like: [O-1] ... FAIL  or  O-1 ... FAIL
-    if grep -qiE "\[?${check_id}\]?[[:space:][:punct:]]*[A-Za-z ]*${expected_verdict}" "$output_file"; then
+    if grep -qiE "\[?${check_id}\]?.*[[:space:]]${expected_verdict}([[:space:]]|[[:punct:]]|$)" "$output_file"; then
       if [[ "$severity" == "CRITICAL" || "$severity" == "HIGH" ]]; then
         echo -e "    ${GREEN}✓ PASS${RESET}  ${check_id} (${severity}): found expected ${expected_verdict}"
         ((fixture_pass++))
