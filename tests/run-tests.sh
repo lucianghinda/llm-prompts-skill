@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run-tests.sh — Run all prompt-injection-review skill tests (Claude + Codex)
+# run-tests.sh — Run all llm-prompts:reviewer skill tests (Claude + Codex)
 # Usage: ./tests/run-tests.sh [--claude-only | --codex-only] [fixture_name]
 
 set -euo pipefail
@@ -43,15 +43,15 @@ echo "╚═══════════════════════�
 echo -e "${RESET}"
 
 if $RUN_CLAUDE; then
-  echo -e "${CYAN}── Claude CLI Tests: prompt-injection-review ────────────${RESET}"
+  echo -e "${CYAN}── Claude CLI Tests: llm-prompts:reviewer ───────────────${RESET}"
   bash "$SCRIPT_DIR/test-claude.sh" "$FIXTURE" || OVERALL_PASS=false
 
-  echo -e "\n${CYAN}── Claude CLI Tests: prompt-builder ─────────────────────${RESET}"
+  echo -e "\n${CYAN}── Claude CLI Tests: llm-prompts:builder ────────────────${RESET}"
   bash "$SCRIPT_DIR/test-builder-claude.sh" all || OVERALL_PASS=false
 fi
 
 if $RUN_CODEX; then
-  echo -e "\n${CYAN}── Codex CLI Tests: prompt-injection-review ─────────────${RESET}"
+  echo -e "\n${CYAN}── Codex CLI Tests: llm-prompts:reviewer ────────────────${RESET}"
   bash "$SCRIPT_DIR/test-codex.sh" "$FIXTURE" || OVERALL_PASS=false
 fi
 

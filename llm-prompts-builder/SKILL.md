@@ -1,8 +1,8 @@
 ---
-name: prompt-builder
+name: llm-prompts:builder
 description: >-
   Build secure LLM prompts and integration scaffolding from scratch, following the
-  OWASP structured prompt pattern and security rules from the prompt-injection-review
+  OWASP structured prompt pattern and security rules from the llm-prompts:reviewer
   skill. Use when starting a new LLM integration or prompt: "build a secure prompt",
   "create LLM prompt", "secure prompt template", "new LLM integration", "scaffold
   LLM code", "prompt builder". Generates system prompt + code scaffolding (input
@@ -21,10 +21,10 @@ allowed-tools:
 
 Generate a secure LLM prompt and surrounding integration code from scratch, following
 the OWASP structured prompt pattern and the security controls defined in the
-`prompt-injection-review` skill. Every generated element is annotated with the check
+`llm-prompts:reviewer` skill. Every generated element is annotated with the check
 ID it satisfies and a one-line explanation of why it exists.
 
-**Companion to:** `prompt-injection-review` (51-check auditor). Use that skill to
+**Companion to:** `llm-prompts:reviewer` (51-check auditor). Use that skill to
 audit existing code; use this skill to build new integrations correctly from the start.
 
 **Reference implementation:** `tests/fixtures/defended-app/` in this repo — every
@@ -509,7 +509,7 @@ Run an internal verification against the 10 most critical checks from the review
 For each check, verify the generated code above satisfies it. Output in this format:
 
 ```
-SELF-REVIEW (prompt-builder v1.0)
+SELF-REVIEW (llm-prompts:builder v1.0)
 ==================================
 Scope: [role] / [task] / [language] / [architecture features]
 
@@ -572,7 +572,7 @@ Present the final artifacts:
 ```
 Next steps to harden further:
 
-1. FULL AUDIT: Run `/prompt-injection-review` against this code for a complete
+1. FULL AUDIT: Run `/llm-prompts:reviewer` against this code for a complete
    51-check review (OWASP + MITRE ATLAS + NeMo Guardrails). The builder covers the
    10 most critical; the reviewer covers all 51.
 

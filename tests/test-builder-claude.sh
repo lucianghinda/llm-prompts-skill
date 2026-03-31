@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# test-builder-claude.sh — Run prompt-builder skill via Claude CLI against scenario fixtures
+# test-builder-claude.sh — Run llm-prompts:builder skill via Claude CLI against scenario fixtures
 # Usage: ./tests/test-builder-claude.sh [scenario_name]
 #   scenario_name: "basic-chatbot" | "rag-assistant" | "tool-calling-agent" | all (default: all)
 #
@@ -13,7 +13,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-SKILL_FILE="$PROJECT_DIR/prompt-builder/SKILL.md"
+SKILL_FILE="$PROJECT_DIR/llm-prompts-builder/SKILL.md"
 SCENARIOS_DIR="$SCRIPT_DIR/fixtures/builder-scenarios"
 OUTPUT_DIR="$SCRIPT_DIR/output"
 EXPECTED_DIR="$SCRIPT_DIR/expected"

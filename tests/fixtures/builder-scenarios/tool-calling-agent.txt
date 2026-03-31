@@ -1,4 +1,4 @@
-You are running the prompt-builder skill. The user has already provided all requirements below.
+You are running the llm-prompts:builder skill. The user has already provided all requirements below.
 Skip all STOP gates — do not use AskUserQuestion at any point.
 Proceed through all 5 phases automatically and produce the full output.
 Output ALL generated code inline in the response. Do NOT write files to disk.

@@ -1,4 +1,4 @@
-# Expected output markers for prompt-builder: tool-calling-agent scenario
+# Expected output markers for llm-prompts:builder: tool-calling-agent scenario
 # Two line formats:
 #   CHECK_ID  SEVERITY  VERDICT        — grep for self-review verdicts (e.g. [O-7] ... PASS)
 #   @PATTERN|SEVERITY|PRESENT         — grep for structural presence in generated code/prompt

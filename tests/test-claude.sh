@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# test-claude.sh — Run prompt-injection-review skill via Claude CLI against test fixtures
+# test-claude.sh — Run llm-prompts:reviewer skill via Claude CLI against test fixtures
 # Usage: ./tests/test-claude.sh [fixture_name]
 #   fixture_name: "vulnerable-app" | "defended-app" | all (default: all)
 
@@ -7,7 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-SKILL_FILE="$PROJECT_DIR/prompt-injection-review/SKILL.md"
+SKILL_FILE="$PROJECT_DIR/llm-prompts-reviewer/SKILL.md"
 FIXTURES_DIR="$SCRIPT_DIR/fixtures"
 OUTPUT_DIR="$SCRIPT_DIR/output"
 EXPECTED_DIR="$SCRIPT_DIR/expected"

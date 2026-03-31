@@ -1,4 +1,4 @@
-# Expected output markers for prompt-builder: rag-assistant scenario
+# Expected output markers for llm-prompts:builder: rag-assistant scenario
 # Two line formats:
 #   CHECK_ID  SEVERITY  VERDICT        — grep for self-review verdicts (e.g. [O-7] ... PASS)
 #   @PATTERN|SEVERITY|PRESENT         — grep for structural presence in generated code/prompt
