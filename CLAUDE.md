@@ -58,6 +58,52 @@ Builder tests additionally support `@PATTERN|SEVERITY|PRESENT` lines that grep f
 
 The defended-app is also the **canonical reference implementation** cited in the builder skill — every code template the builder generates is modeled on it.
 
+## Editing skills
+
+**Never edit SKILL.md directly.** Each skill is assembled from smaller source files. To edit a skill:
+
+1. Edit the relevant file(s) in `llm-prompts-*/src/`
+2. Run `./build.sh` to regenerate SKILL.md
+3. Commit both the `src/` changes and the regenerated SKILL.md
+
+Run `./build.sh --check` to verify SKILL.md is up to date with src/. A GitHub Actions workflow runs this check on every push and PR — it will fail if SKILL.md is stale.
+
+### Source file layout
+
+Each skill directory has a `src/` subdirectory with numbered parts:
+
+```
+llm-prompts-builder/src/
+  00-frontmatter.md               YAML frontmatter
+  01-intro.md                     Title + intro
+  10-phase0-requirements.md       Phase 0: Gather Requirements
+  20-phase1-system-prompt.md      Phase 1: System Prompt generation
+  30-phase2-intro.md              Phase 2 heading
+  31-phase2a-prompt-construction.md  2A: Prompt construction templates
+  32-phase2b-input-validation.md     2B: InputGuardrail (Python + Ruby)
+  33-phase2c-output-validation.md    2C: OutputGuardrail (Python + Ruby)
+  34-phase2d-integration-wiring.md   2D: Rate limiting + logging
+  35-phase2e-tool-definitions.md     2E: Tool definitions
+  36-phase2f-rag-pipeline.md         2F: RAG pipeline templates
+  40-phase3-self-review.md        Phase 3: Self-Review
+  50-phase4-deliver.md            Phase 4: Deliver + next steps
+  60-reference.md                 OWASP quick reference
+
+llm-prompts-reviewer/src/
+  00-frontmatter.md               YAML frontmatter
+  01-intro.md                     Title + severity levels
+  10-step0-scope.md               Step 0: Determine scope
+  20-phase1-discovery.md          Phase 1: Discovery
+  30-phase2-owasp.md              Phase 2: OWASP checks O-1–O-23
+  40-phase3-mitre.md              Phase 3: MITRE ATLAS M-1–M-12
+  50-phase4-nemo.md               Phase 4: NeMo N-1–N-16
+  60-phase5-report.md             Phase 5: Report generation
+  70-reference-index.md           Quick index of all 51 checks
+  80-appendix-a-templates.md      Appendix A: Prompt templates
+```
+
+Numeric prefixes control assembly order. The tens-based spacing (10, 20, 30…) leaves room to insert new sections without renaming everything.
+
 ## Skills structure
 
 Each SKILL.md starts with YAML frontmatter (name, description, allowed-tools) and contains the full methodology that Claude follows as a system prompt. The skills use a multi-phase, STOP-gated approach:

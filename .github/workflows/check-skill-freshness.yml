@@ -1,0 +1,14 @@
+name: Check skill freshness
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check-freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify SKILL.md files match src/ parts
+        run: ./build.sh --check
