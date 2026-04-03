@@ -1,4 +1,4 @@
-# llm-prompt-injection-reviewer
+# Skills to review LLM prompts
 
 Claude Code skills for auditing and building LLM integrations against prompt injection attacks.
 
